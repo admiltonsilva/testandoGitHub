@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Lista de Insumos</title>
+    <script type='text/javascript' src="main.js"></script>
+
+
+    
+
+</head>
+<style>
+
+
+    #listaRegistros {
+        display: none;
+    }
+    
+    #cadastroRegistro {
+        display: none;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    body[page=lista] #listaRegistros {
+        display: block;
+    }
+    
+    body[page=cadastro] #cadastroRegistro {
+        display: flex;
+    }
+    
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    table th,
+    table td {
+        font-size: 14px;
+        padding: 10px 15px;
+        border: solid 1px #ccc;
+    }
+    
+    button {
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 3px;
+        padding: 10px 15px;
+    }
+    
+    button.cinza {
+        background-color: #ccc;
+        color: #666;
+    }
+    
+    button.vermelho {
+        background-color: #a00;
+    }
+    
+    button:hover {
+        opacity: 0.8;
+    }
+    
+    input {
+        border: solid 1px #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .label>div {
+        display: flex;
+        width: 100%;
+    }
+    
+    .label>div>input {
+        flex: 1;
+    }
+    
+    h1 {
+        padding: 0px;
+        text-align: center;
+        font-size: 25pt;
+    }
+    
+    /* Adicionando media queries para ajustar o layout em diferentes tamanhos de tela */
+    
+    @media only screen and (max-width: 600px) {
+        /* Estilos para telas menores que 600px de largura */
+        h1 {
+            font-size: 20pt;
+        }
+    
+        input {
+            width: 100%;
+        }
+    }
+    
+    @media only screen and (min-width: 601px) and (max-width: 1024px) {
+        /* Estilos para telas entre 601px e 1024px de largura */
+        h1 {
+            font-size: 22pt;
+        }
+    }
+
+ 
+    
+
+   
+</style>
+<body page='lista'>
+    
+
+    <div>
+        <h1>Calcular e salvar dados insumo</h1>
+
+        
+
+        <div id="calcForm">
+            <div class="geral">
+
+               <label for="nomeProduto" class="label1">Qual insumo deseja calcular?</label>
+            <div>
+            <input type="text" id="nomeProduto" name="nomeProduto" class="input1" placeholder="Nome do Produto" onkeypress="handleKeyPress(event, 'precoInsumo')">   
+            </div>
+
+           <label for="precoInsumo" class="label2">Quanto custa o kg do insumo?</label>
+            <div>
+            <input type="number" id="precoInsumo" name="precoInsumo" step="0.01" class="input2" placeholder="Preço do Produto" onkeypress="handleKeyPress(event, 'gramaPizzaInteira')">
+            </div>
+
+            <label for="gramaPizzaInteira" class="label3">Quantas gramas pizza inteira?</label>
+            <div>
+            <input type="number" id="gramaPizzaInteira" name="gramaPizzaInteira" step="0.01" class="input3" placeholder="Peso do Produto" onkeypress="handleKeyPress(event, 'confirma')">
+            </div>
+            
+            <button type="button" onclick="calcular()" id="confirma">Calcular</button>
+         </div>
+       
+
+
+
+     </div>
+
+    <div id='listaRegistros'>
+       <h1>SEGUNDA PARTE (MOSTRAR INSUMOS CADASTRADOS)</h1>  
+       <section class="area-cadastros1">
+        <div class='cadastro'>
+   
+        <div style='display: flex;'>
+            <input style='flex:1' placeholder="PESQUISAR" autofocus id='inputPesquisa' />
+            
+        </div>
+
+        <table>
+            
+            <tbody id='listaRegistrosBody'></tbody>
+        </table>
+
+       
+      </div>
+    </section>
+    </div>
+
+    <form id='cadastroRegistro'>
+    <h1>Cadastrar cliente</h1>
+
+    <section class="area-cadastros">
+    <div class='cadastrar'>
+        <div class='label'>
+            <div>ID</div>
+            <div>
+                <input type='number' readonly id='id' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Nome do Produto</div>
+            <div>
+                <input id='nomeProduto' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Preço do Insumo</div>
+            <div>
+                <input id='precoInsumo' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Preço Inteira</div>
+            <div>
+                <input id='precoInteira' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Preço Meia</div>
+            <div>
+                <input  id='precoMeia' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Preço Terço</div>
+            <div>
+                <input id='precoTerco' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Grama Inteira</div>
+            <div>
+                <input  id='gramaInteira' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Grama Meia</div>
+            <div>
+                <input id='gramaMeia' />
+            </div>
+        </div>
+
+        <div class='label'>
+            <div>Grama Terço</div>
+            <div>
+                <input id='gramaTerco' />
+            </div>
+        </div>
+
+        <div>
+            <button>Salvar</button>
+            <button onclick="vizualizar('lista')" class="cinza" type='button'>Cancelar</button>
+        </div>
+       </div>
+    </section>
+    </form>
+    
+<script>
+
+    
+    
+    function calcular() {
+        // Obtenha os valores dos campos de entrada
+        let nomeProduto = document.getElementById("nomeProduto").value;
+        let precoInsumo = parseFloat(document.getElementById("precoInsumo").value);
+        let gramaPizzaInteira = parseFloat(document.getElementById("gramaPizzaInteira").value);
+    
+        
+
+        if (nomeProduto === "" || isNaN(precoInsumo) || isNaN(gramaPizzaInteira)) {
+            alert("Por favor, preencha todos os campos antes de calcular.");
+            return;
+        }
+    
+        let inteiraGrama = (gramaPizzaInteira).toFixed(1);
+        let meiaGrama = (gramaPizzaInteira / 2).toFixed(1);
+        let tercoGrama = (gramaPizzaInteira / 3).toFixed(1);
+    
+        precoInsumo = precoInsumo / 1000;
+    
+        let precoInteira = (inteiraGrama * precoInsumo).toFixed(2);
+        let precoMeia = (meiaGrama * precoInsumo).toFixed(2);
+        let precoTerco = (tercoGrama * precoInsumo).toFixed(2);
+    
+        precoInsumo = precoInsumo * 1000;
+
+        // Salvar os dados calculados na lista de itens registrados
+        insertUsuario(nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, inteiraGrama, meiaGrama, tercoGrama);
+    
+
+        // Limpar campos de entrada
+        document.getElementById("nomeProduto").value = "";
+        document.getElementById("precoInsumo").value = "";
+        document.getElementById("gramaPizzaInteira").value = "";
+    }
+    
+
+
+    function handleKeyPress(event, nextInputId) {
+        if (event.key === 'Enter') {
+            document.getElementById(nextInputId).focus();
+            event.preventDefault();  // Evita que o formulário seja enviado ao pressionar Enter
+        }
+    }
+
+    const KEY_BD = '@insumosCadastrados';
+
+
+    var listaRegistros = {
+        ultimoIdGerado: 0,
+        usuarios:[]
+    }
+    
+    
+    var FILTRO = ''
+    
+     
+    function pesquisar(value){
+        FILTRO = value;
+        desenhar();
+    }
+    
+    function gravarBD(){
+        localStorage.setItem(KEY_BD, JSON.stringify(listaRegistros) );
+    }
+    
+    function lerBD(){
+        const data = localStorage.getItem(KEY_BD);
+        if(data){
+            listaRegistros = JSON.parse(data);
+        }
+        desenhar();
+    }
+    
+   
+    
+    
+    function desenhar(){
+        const tbody = document.getElementById('listaRegistrosBody')
+        if(tbody){
+            var data = listaRegistros.usuarios;
+            if(FILTRO.trim()){
+                const expReg = eval(`/${FILTRO.trim().replace(/[^\d\w]+/g,'.*')}/i`)
+                data = data.filter( usuario => {
+                    return expReg.test( usuario.nome ) || expReg.test( usuario.fone )
+                } )
+            }
+            data = data
+                .sort( (a, b) => {
+                    return a.nome < b.nome ? -1 : 1
+                })
+                .map( usuario => {
+                    return `
+                
+                
+                        <tr class="tabela-usuario">  
+                                 <tr>
+                                    <th>cod ${usuario.id}</th>
+                                    <th colspan="2">${usuario.nomeProduto}</th>
+                                    <th>R$ ${usuario.precoInsumo} kg</th>
+                                </tr>
+                                <tr>
+                                    <th>Tamanho</th>
+                                    <th>Inteira</th>
+                                    <th>Meia</th>
+                                    <th>Terço</th>
+                                </tr>
+                                <tr>
+                                    <th>Gramas</th>
+                                    <th>${usuario.gramaInteira}g</th>
+                                    <th>${usuario.gramaMeia}g</th>
+                                    <th>${usuario.gramaTerco}g</th>
+                                </tr>
+                                <tr>
+                                    <th>Preço</th>
+                                    <th>R$ ${usuario.precoInteira}</th>
+                                    <th>R$ ${usuario.precoMeia}</th>
+                                    <th>R$ ${usuario.precoTerco}</th>
+                                </tr>
+                                <button onclick='vizualizar("cadastro",false,${usuario.id})'>Editar</button>
+                                <button class='vermelho' onclick='perguntarSeDeleta(${usuario.id})'>Deletar</button>
+                            
+                        </tr>`
+                } )
+            tbody.innerHTML = data.join('')
+        }
+    }
+    
+    function insertUsuario(nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco){
+        const id = listaRegistros.ultimoIdGerado + 1;
+        listaRegistros.ultimoIdGerado = id;
+        listaRegistros.usuarios.push({
+            id, nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco
+        })
+        gravarBD()
+        desenhar()
+        vizualizar('lista')
+    }
+    
+    function editUsuario(id, nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco){
+        var usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
+        usuario.nomeProduto = nomeProduto;
+        usuario.precoInsumo = precoInsumo;
+        usuario.precoInteira = precoInteira;
+        usuario.precoMeia = precoMeia;
+        usuario.precoTerco = precoTerco;
+        usuario.gramaInteira = gramaInteira;
+        usuario.gramaMeia = gramaMeia;
+        usuario.gramaTerco = gramaTerco;
+                          
+        gravarBD()
+        desenhar()
+        vizualizar('lista')
+    }
+    
+    function deleteUsuario(id){
+        listaRegistros.usuarios = listaRegistros.usuarios.filter( usuario => {
+            return usuario.id != id
+        } )
+        gravarBD()
+        desenhar()
+    }
+    
+    function perguntarSeDeleta(id){
+        if(confirm('Quer deletar o registro de id '+id)){
+            deleteUsuario(id)
+        }
+    }
+    
+    
+    function limparEdicao() {
+        document.getElementById('nomeProduto').value = '';
+        document.getElementById('precoInsumo').value = '';
+        document.getElementById('precoInteira').value = '';
+        document.getElementById('precoMeia').value = '';
+        document.getElementById('precoTerco').value = '';
+        document.getElementById('gramaInteira').value = '';
+        document.getElementById('gramaMeia').value = '';
+        document.getElementById('gramaTerco').value = '';
+    }
+    
+    function vizualizar(pagina, novo=false, id=null){
+        document.body.setAttribute('page',pagina)
+        if(pagina === 'cadastro'){
+            if(novo) limparEdicao()
+            if(id){
+                const usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
+                if(usuario){
+                    document.getElementById('id').value = usuario.id
+                    document.getElementById('nomeProduto').value = usuario.nomeProduto
+                    document.getElementById('precoInsumo').value = usuario.precoInsumo
+                    document.getElementById('precoInteira').value = usuario.precoInteira
+                    document.getElementById('precoMeia').value = usuario.precoMeia
+                    document.getElementById('precoTerco').value = usuario.precoTerco
+                    document.getElementById('gramaInteira').value = usuario.gramaInteira
+                    document.getElementById('gramaMeia').value = usuario.gramaMeia
+                    document.getElementById('gramaTerco').value = usuario.gramaTerco
+                }
+            }
+            document.getElementById('nomeProduto').focus()
+        }
+    }
+    
+    
+    
+    function submeter(e) {
+        e.preventDefault();
+        const data = {
+            id: document.getElementById('id').value,
+            nomeProduto: document.getElementById('nomeProduto').value,
+            precoInsumo: document.getElementById('precoInsumo').value,
+            precoInteira: document.getElementById('precoInteira').value,
+            precoMeia: document.getElementById('precoMeia').value,
+            precoTerco: document.getElementById('precoTerco').value,
+            gramaInteira: document.getElementById('gramaInteira').value,
+            gramaMeia: document.getElementById('gramaMeia').value,
+            gramaTerco: document.getElementById('gramaTerco').value,
+        };
+        if (data.id) {
+            editUsuario(
+                data.id,
+                data.nomeProduto,
+                data.precoInsumo,
+                data.precoInteira,
+                data.precoMeia,
+                data.precoTerco,
+                data.gramaInteira,
+                data.gramaMeia,
+                data.gramaTerco
+            );
+        } else {
+            insertUsuario(
+                data.nomeProduto,
+                data.precoInsumo,
+                data.precoInteira,
+                data.precoMeia,
+                data.precoTerco,
+                data.gramaInteira,
+                data.gramaMeia,
+                data.gramaTerco
+            );
+        }
+    }
+    
+    
+    window.addEventListener('load', () => {
+        lerBD();
+        document.getElementById('cadastroRegistro').addEventListener('submit', submeter);
+        document.getElementById('inputPesquisa').addEventListener('keyup', (e) => {
+            pesquisar(e.target.value);
+        });
+    });
+</script>
+</body>
+</html>
