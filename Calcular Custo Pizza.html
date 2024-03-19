@@ -312,10 +312,7 @@
         desenhar();
     }
     
-    function gravarBD(){
-        localStorage.setItem(KEY_BD, JSON.stringify(listaRegistros) );
-    }
-    
+
     function lerBD(){
         const data = localStorage.getItem(KEY_BD);
         if(data){
@@ -323,6 +320,38 @@
         }
         desenhar();
     }
+    
+
+
+
+
+    function gravarBD(){
+        localStorage.setItem(KEY_BD, JSON.stringify(listaRegistros) );
+    }
+    
+    
+    function vizualizar(pagina, novo=false, id=null){
+        document.body.setAttribute('page',pagina)
+        if(pagina === 'cadastro'){
+            if(novo) limparEdicao()
+            if(id){
+                const usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
+                if(usuario){
+                    document.getElementById('id').value = usuario.id
+                    document.getElementById('nomeProduto').value = usuario.nomeProduto
+                    document.getElementById('precoInsumo').value = usuario.precoInsumo
+                    document.getElementById('precoInteira').value = usuario.precoInteira
+                    document.getElementById('precoMeia').value = usuario.precoMeia
+                    document.getElementById('precoTerco').value = usuario.precoTerco
+                    document.getElementById('gramaInteira').value = usuario.gramaInteira
+                    document.getElementById('gramaMeia').value = usuario.gramaMeia
+                    document.getElementById('gramaTerco').value = usuario.gramaTerco
+                }
+            }
+            document.getElementById('nomeProduto').focus()
+        }
+    }
+    
     
    
     
@@ -379,8 +408,10 @@
     }
     
     function insertUsuario(nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco){
+       
         const id = listaRegistros.ultimoIdGerado + 1;
         listaRegistros.ultimoIdGerado = id;
+
         listaRegistros.usuarios.push({
             id, nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco
         })
@@ -391,6 +422,7 @@
     
     function editUsuario(id, nomeProduto, precoInsumo, precoInteira, precoMeia, precoTerco, gramaInteira, gramaMeia, gramaTerco){
         var usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
+        usuario.id = id;
         usuario.nomeProduto = nomeProduto;
         usuario.precoInsumo = precoInsumo;
         usuario.precoInteira = precoInteira;
@@ -431,29 +463,6 @@
         document.getElementById('gramaTerco').value = '';
     }
     
-    function vizualizar(pagina, novo=false, id=null){
-        document.body.setAttribute('page',pagina)
-        if(pagina === 'cadastro'){
-            if(novo) limparEdicao()
-            if(id){
-                const usuario = listaRegistros.usuarios.find( usuario => usuario.id == id )
-                if(usuario){
-                    document.getElementById('id').value = usuario.id
-                    document.getElementById('nomeProduto').value = usuario.nomeProduto
-                    document.getElementById('precoInsumo').value = usuario.precoInsumo
-                    document.getElementById('precoInteira').value = usuario.precoInteira
-                    document.getElementById('precoMeia').value = usuario.precoMeia
-                    document.getElementById('precoTerco').value = usuario.precoTerco
-                    document.getElementById('gramaInteira').value = usuario.gramaInteira
-                    document.getElementById('gramaMeia').value = usuario.gramaMeia
-                    document.getElementById('gramaTerco').value = usuario.gramaTerco
-                }
-            }
-            document.getElementById('nomeProduto').focus()
-        }
-    }
-    
-    
     
     function submeter(e) {
         e.preventDefault();
@@ -482,6 +491,7 @@
             );
         } else {
             insertUsuario(
+                data.id,
                 data.nomeProduto,
                 data.precoInsumo,
                 data.precoInteira,
